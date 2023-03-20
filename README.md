@@ -21,7 +21,7 @@ If you need a more generic solution for servo control over I2C, maybe in combina
 
 ### Example and demonstration
 
-I used Stefan's code for my [WeFish fischertechnik controller](https://forum.ftcommunity.de/viewtopic.php?f=33&t=6359) system, which is built around the Wemos D1 mini and compatibles. For the servo module , the ubiquitous PCA9685 modules would have been too big, while a bare ATtiny2313 with two capacitors was a natural fit (the servo module is in the middle):
+I used Stefan's code for my [WeFish fischertechnik controller](https://forum.ftcommunity.de/viewtopic.php?f=33&t=6359) system, which is built around the Wemos D1 mini and compatibles. For the servo module , the ubiquitous PCA9685 modules would have been too big, while a bare ATtiny2313 with two capacitors was a natural fit (the servo module with an ATtiny2313 is the one in the middle):
 
 ![https://forum.ftcommunity.de/download/file.php?id=2087](README.assets/web_DSC_3053.JPG)
 
