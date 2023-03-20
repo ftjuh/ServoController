@@ -143,7 +143,9 @@ ISR(TIMER0_OVF_vect) {
             case 3: PORTA |= 1; break;
             case 4: PORTD |= 4; break;
         }
-    }
+    }        
+    
+    
     if (servo[loop+5] != 0) {
         switch (loop) {
             case 0: PORTD |= 8;  break;
@@ -256,22 +258,25 @@ int main() {
         while (!(USISR & (1<<USISIF))); 
 
         // Wait until end of start condition or begin of stop condition 
-        while ((PINB & SCL_mask) && !(PINB & SDA_mask));  //* while SCL high *and* SDA low
+        //* while ((PINB & SCL_mask) && !(PINB & SDA_mask));  //* while SCL high *and* SDA low
+        uint8_t PINB_tmp; //* needed for fixing bug 1
+        do {
+          PINB_tmp = PINB;
+        } while ((PINB_tmp & SCL_mask) && !(PINB_tmp & SDA_mask));
 
-        //* SCL went low, SDA still low: end of start condition
-        //* SDA went high, SCL still high : stop condition
-        
         // Break when a stop condition has been received while waiting
         /** 
-         * bug 1: This code does not reliably detect a stop condition, as it 
-         * rereads SDA (which could have changed in between) and ignores SCL.
+         * bug 1: The original code does not reliably detect a stop condition, 
+         * as it rereads SDA (which can have changed) and ignores SCL.
          * Together with bug 2 below, it would crash the device when used with
          * an ESP8266 and addresses >= 0x40 because of a very thight, but still
-         * I2C conform, timing of the ESP8266 Arduino core's Wire implementation.
+         * I2C-compliant, timing of the ESP8266 Arduino core's Wire implementation.
         */
-        if (PINB & SDA_mask) {
+        //* if (PINB & SDA_mask) {
+        if ((PINB_tmp & SDA_mask) and (PINB_tmp & SCL_mask)) { //* fixes bug 1
           //* bug 2: this exits the main while(1) loop and the main() function
-          break; 
+          //* break;
+          continue; //* fixes bug 2
         }
        
         // Clear i2c status flags and prepare to receive the device address
@@ -282,7 +287,8 @@ int main() {
         while (!(USISR & ((1<<USIOIF) | (1<<USIPF))));
 
         // If byte received
-        //* possible bug 3: USISR/USIOIF is being reread
+        //* possible bug 3: USISR/USIOIF is being reread 
+        //* no, not a bug, USIOIF remains until cleared by user
         if ((USISR & (1<<USIOIF))) {
 
             // If the address is 0 or matches the configured address
@@ -313,6 +319,7 @@ int main() {
 
                     // If byte received
                     //* possible bug 4: USISR/USIOIF is being reread
+                    //* no, not a bug, USIOIF remains until cleared by user
                     if ((USISR & (1<<USIOIF))) {
 
                         // copy to the servo value array
