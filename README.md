@@ -2,7 +2,7 @@
 
 This is a firmware for ATtiny2313 and ATtiny26 target (slave) devices that enables you to control up to 10 servo motors by a controller (master) device via I2C.
 
-Original code by [Stefan Frings](http://stefanfrings.de/). Find his [original documentation (in German) here](https://github.com/ftjuh/ServoController/tree/v1.0.0/doc) and an archived version of his original page (now offline) [at archive.org](https://web.archive.org/web/20211019191937/http://stefanfrings.de/servocontroller/index.html).
+Original code by [Stefan Frings](http://stefanfrings.de/). Find his original documentation (in German) [here](https://github.com/ftjuh/ServoController/tree/v1.0.0/doc) and an archived version of his original page (now offline) [at archive.org](https://web.archive.org/web/20211019191937/http://stefanfrings.de/servocontroller/index.html).
 
 This repository includes the original code in [release 1](https://github.com/ftjuh/ServoController/releases/tag/v1.0.0), with bug fixes and additional documentation  in [subsequent releases](https://github.com/ftjuh/ServoController/releases) maintained by me ([ftjuh](https://github.com/ftjuh)).
 
@@ -21,7 +21,7 @@ If you need a more generic solution for servo control over I2C, maybe in combina
 
 ### Example and demonstration
 
-I used Stefan's code for my [WeFish fischertechnik controller](https://forum.ftcommunity.de/viewtopic.php?f=33&t=6359) system, which is build around the Wemos D1 mini and compatibles. For the servo module , the ubiquitous PCA9685 modules would have been too big, while a bare ATtiny2313 with two capacitors was a natural fit (the servo module is in the middle):
+I used Stefan's code for my [WeFish fischertechnik controller](https://forum.ftcommunity.de/viewtopic.php?f=33&t=6359) system, which is built around the Wemos D1 mini and compatibles. For the servo module , the ubiquitous PCA9685 modules would have been too big, while a bare ATtiny2313 with two capacitors was a natural fit (the servo module is in the middle):
 
 ![https://forum.ftcommunity.de/download/file.php?id=2087](README.assets/web_DSC_3053.JPG)
 
