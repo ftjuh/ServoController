@@ -9,6 +9,11 @@
 
 // Written for ATtiny26, using internal 4Mhz RC oscillator
 
+//* Original code by Stefan Frings
+//* Released under GPL
+//* Additional comments (marked with '//*' or '/**'), corrections, and bug fixes by ftjuh
+//* note: ATtiny26 bugfixes are not tested, I don't own one
+
 // 1  PB0 SDA
 // 2  PB1 activity LED (low active)
 // 3  PB2 SCL
@@ -29,6 +34,9 @@
 // 18 PA2 servo 2
 // 19 PA1 servo 1
 // 20 PA0 servo 0
+
+#define SDA_mask (1 << 0) //* PB0
+#define SCL_mask (1 << 2) //* PB2
 
 // The input pins for i2c address bits have internal pull-up's.
 // The remaining address bits are defined here:
@@ -166,11 +174,16 @@ int main() {
         while (!(USISR & (1<<USISIF)));
    
         // Wait until end of start condition or begin of stop condition 
-        while ((PINB & 4) && !(PINB & 1));
+        //* while ((PINB & 4) && !(PINB & 1));
+        uint8_t PINB_tmp; //* needed for fixing bug 1
+        do {
+          PINB_tmp = PINB;
+        } while ((PINB_tmp & SCL_mask) && !(PINB_tmp & SDA_mask));
 
         // Break when a stop condition has been received while waiting
-        if (PINB & 1) {
-          break;
+        if ((PINB_tmp & SDA_mask) and (PINB_tmp & SCL_mask)) { //* fixes bug 1
+          //* break;
+          continue; //* fixes bug 2
         }
        
         // Clear i2c status flags and prepare to receive the device address
