@@ -273,7 +273,7 @@ int main() {
          * I2C-compliant, timing of the ESP8266 Arduino core's Wire implementation.
         */
         //* if (PINB & SDA_mask) {
-        if ((PINB_tmp & SDA_mask) and (PINB_tmp & SCL_mask)) { //* fixes bug 1
+        if ((PINB_tmp & SDA_mask) && (PINB_tmp & SCL_mask)) { //* fixes bug 1
           //* bug 2: this exits the main while(1) loop and the main() function
           //* break;
           continue; //* fixes bug 2

@@ -181,7 +181,7 @@ int main() {
         } while ((PINB_tmp & SCL_mask) && !(PINB_tmp & SDA_mask));
 
         // Break when a stop condition has been received while waiting
-        if ((PINB_tmp & SDA_mask) and (PINB_tmp & SCL_mask)) { //* fixes bug 1
+        if ((PINB_tmp & SDA_mask) && (PINB_tmp & SCL_mask)) { //* fixes bug 1
           //* break;
           continue; //* fixes bug 2
         }
