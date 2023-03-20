@@ -37,6 +37,8 @@
 // 19 PB7 SCL
 // 20 VCC 3.3 - 5.5V
 
+#define SDA_mask (1 << 5) //* PB5
+#define SCL_mask (1 << 7) //* PB7
 
 //* ATtiny2313 physical pins, sorted by port
 
@@ -213,10 +215,10 @@ int main() {
     while (1) {
 
         // Enable driving SCL
-        DDRB |= 128;  //* SCL is output
-        PORTB |= 128; //* SCL high
+        DDRB |= SCL_mask;  //* SCL is output
+        PORTB |= SCL_mask; //* SCL high
         // SDA=input
-        DDRB &= ~32;
+        DDRB &= ~SDA_mask;
 
         // Clear i2c status flags and wait for start condition        
         
@@ -254,7 +256,7 @@ int main() {
         while (!(USISR & (1<<USISIF))); 
 
         // Wait until end of start condition or begin of stop condition 
-        while ((PINB & 128) && !(PINB & 32));  //* while SCL high *and* SDA low
+        while ((PINB & SCL_mask) && !(PINB & SDA_mask));  //* while SCL high *and* SDA low
 
         //* SCL went low, SDA still low: end of start condition
         //* SDA went high, SCL still high : stop condition
@@ -267,7 +269,7 @@ int main() {
          * an ESP8266 and addresses >= 0x40 because of a very thight, but still
          * I2C conform, timing of the ESP8266 Arduino core's Wire implementation.
         */
-        if (PINB & 32) {
+        if (PINB & SDA_mask) {
           //* bug 2: this exits the main while(1) loop and the main() function
           break; 
         }
@@ -294,10 +296,10 @@ int main() {
 
                 // Send ack bit
                 USIDR=0;
-                DDRB |= 32;
+                DDRB |= SDA_mask;
                 USISR = (1<<USIOIF) | (1<<USIPF) | (1<<USIDC) | 14;
                 while (!(USISR & (1<<USIOIF)));
-                DDRB &= ~32;  
+                DDRB &= ~SDA_mask;
 
                 // Receive up to 10 bytes
                 for (uint8_t channel=0; channel<10; channel++) {
@@ -318,10 +320,10 @@ int main() {
 
                         //Send ack bit
                         USIDR=0;
-                        DDRB |= 32;
+                        DDRB |= SDA_mask;
                         USISR = (1<<USIOIF) | (1<<USIPF) | (1<<USIDC) | 14;
                         while (!(USISR & (1<<USIOIF)));
-                        DDRB &= ~32;
+                        DDRB &= ~SDA_mask;
                     }
 
                     // else if stop condition received, break the for loop
