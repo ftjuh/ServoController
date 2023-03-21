@@ -1,4 +1,4 @@
-# I2C ServoController for ATtiny2313 and ATtiny26
+# I2C Servo Controller for ATtiny2313 and ATtiny26
 
 This is a firmware for ATtiny2313 and ATtiny26 target (slave) devices that enables you to control up to 10 servo motors by a controller (master) device via I2C.
 
@@ -18,6 +18,10 @@ If you need servo control over I2C, you can use a number of dedicated chips and 
 In fact, Stefan's solution of using three timer interrupts for 10 servos is quite clever and instructive, and with only 1.6 Kb it's an impressive example of what you can get out of an ATtiny's very limited resources. On the other hands, it is also an example of the [dangers](https://github.com/ftjuh/ServoController/issues/1) of ignoring (or having to ignore) the merits of software reusability.
 
 If you need a more generic solution for servo control over I2C, maybe in combination with other functionality, have a look at my [I2Cwrapper project](https://github.com/ftjuh/I2Cwrapper) and its [ServoI2C module](https://github.com/ftjuh/I2Cwrapper#servoi2c).
+
+### Schematics
+
+![](README.assets/schematics.png)
 
 ### Example and demonstration
 
