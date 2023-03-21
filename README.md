@@ -21,7 +21,7 @@ If you need a more generic solution for servo control over I2C, maybe in combina
 
 ### Schematics
 
-![](README.assets/schematics.png)
+![schematics](https://github.com/ftjuh/ServoController/blob/main/doc/schematics.png?raw=true)
 
 ### Example and demonstration
 
